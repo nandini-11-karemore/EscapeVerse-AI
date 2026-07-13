@@ -15,7 +15,7 @@ def show_intro():
             🗝 EscapeVerse AI
         </h1>
 
-        <h3 style="
+        <h3 >< style="
             color:#bbbbbb;
             font-weight:400;
         ">
