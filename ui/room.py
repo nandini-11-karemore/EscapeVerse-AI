@@ -1,22 +1,48 @@
 import streamlit as st # type: ignore
-from PIL import Image
 import os
+from PIL import Image, UnidentifiedImageError
+
 def show_room(game):
-    st.markdown('<div class="game-card">', unsafe_allow_html=True)
 
-    st.subheader(f"🏰 {game.location}")
+    st.markdown("<div class='game-card'>", unsafe_allow_html=True)
 
-    image_path = "assets/images/room.jpg"
+    st.subheader(f"🏰 {game.current_location}")
 
-    if os.path.exists(image_path):
+    location = game.current_location.lower().replace(" ", "")
+
+    # ---------- IMAGE ----------
+    image_path = f"assets/generated/{location}.jpg"
+
+    try:
         image = Image.open(image_path)
-        st.image(image, use_container_width=True)
 
-    st.caption("The room feels strangely peaceful...")
+    except (FileNotFoundError, UnidentifiedImageError):
 
+       image = Image.open("assets/images/room.jpg")
+
+    st.image(image, use_container_width=True)
+
+    # ---------- SOUND ----------
+    sound_path = f"assets/sounds/{location}.mp3"
+
+    if os.path.exists(sound_path):
+        with open(sound_path, "rb") as audio:
+            st.audio(audio.read())
+
+    # ---------- OBJECTS ----------
     st.markdown("### 👀 Visible Objects")
 
-    for obj in game.visible_objects:
-        st.write(obj)
+    clicked = None
+
+    cols = st.columns(2)
+
+    for i, obj in enumerate(game.visible_objects):
+
+        with cols[i % 2]:
+
+            if st.button(obj, use_container_width=True):
+                clicked = f"inspect {obj}"
 
     st.markdown("</div>", unsafe_allow_html=True)
+
+    return clicked

@@ -1,63 +1,40 @@
+from ai.ai_engine import AIEngine
+
+
 class GameEngine:
+
+    def __init__(self):
+        self.ai = AIEngine()
 
     def process_action(self, game, action):
 
-        action = action.lower().strip()
+        response = self.ai.process(game, action)
+        game.history.append({
+        "player": action,
+        "story": response["story"]
+        })
+        if response["location"]:
+         game.current_location = response["location"]
 
-        if action == "inspect computer":
+        game.score += response.get("score", 0)
+        # Update Story
+        game.story = response["story"]
 
-            game.story = """
-The computer flickers to life.
+        # Update Inventory
+        for item in response["inventory_add"]:
+            if item not in game.inventory:
+                game.inventory.append(item)
 
-A hidden drawer opens.
+        # Update Journal
+        for note in response["journal_add"]:
+            if note not in game.journal:
+                game.journal.append(note)
 
-Inside you discover a brass key.
-"""
+        # Update Visible Objects
+        if response["visible_objects"]:
+            game.visible_objects = response["visible_objects"] 
+def get_hint(self, game):
 
-            if "🗝 Brass Key" not in game.inventory:
-                game.inventory.append("🗝 Brass Key")
+    response = self.ai.get_hint(game)
 
-            game.journal.append(
-                "Found a hidden brass key inside the computer desk."
-            )
-
-        elif action == "inspect bookshelf":
-
-            game.story = """
-The bookshelf is covered in dust.
-
-One old astronomy journal catches your attention.
-"""
-
-            if "📖 Astronomy Journal" not in game.inventory:
-                game.inventory.append("📖 Astronomy Journal")
-
-            game.journal.append(
-                "Discovered an old astronomy journal."
-            )
-
-        elif action == "look around":
-
-            game.story = """
-The room is silent.
-
-You notice:
-
-🖥 Computer
-
-📚 Bookshelf
-
-🌌 Window
-
-🪑 Chair
-
-The rain continues outside.
-"""
-
-        else:
-
-            game.story = f"""
-You try to '{action}'.
-
-Nothing interesting happens.
-"""
+    return response

@@ -1,6 +1,10 @@
 import streamlit as st # type: ignore
+from ui.typewriter import typewriter
 
 def show_story(game):
+    typewriter(game.story)
+    with st.spinner("The world is changing..."):
+        pass
 
     with st.container():
         st.markdown("## 📖 Story")

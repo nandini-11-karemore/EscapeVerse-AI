@@ -2,9 +2,14 @@ class GameState:
 
     def __init__(self):
 
-        self.location = "Observatory"
+        
 
         self.health = 100
+
+        
+        self.history = []
+
+        self.current_location = "Observatory"
 
         self.score = 0
 
@@ -37,3 +42,4 @@ Something feels unfinished.
             "🌌 Window",
             "📅 Calendar"
         ]
+        self.achievements = []

@@ -1,6 +1,6 @@
 import streamlit as st  # type: ignore
 
-def show_header():
+def show_header(game):
 
     st.markdown(
         """
@@ -14,16 +14,19 @@ def show_header():
         """,
         unsafe_allow_html=True
     )
+    progress = min(game.score / 100, 1.0)
 
+    st.progress(progress)
     st.markdown(
         """
         <div class="status-bar">
 
-        🏰 Laboratory &nbsp;&nbsp;&nbsp;&nbsp;
+        🏰 {game.current_location}
+
 
         ❤️ Health: 100 &nbsp;&nbsp;&nbsp;&nbsp;
 
-        ⭐ Score: 0 &nbsp;&nbsp;&nbsp;&nbsp;
+        ⭐ Score: {game.score}
 
         ⏱ Time: 00:00
 
