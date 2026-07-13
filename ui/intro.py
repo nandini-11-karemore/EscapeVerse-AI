@@ -10,17 +10,17 @@ def show_intro():
     ">
         <h1 style="
             font-size:70px;
-            color:white;
+            color:gold;
         ">
             🗝 EscapeVerse AI
         </h1>
 
-        < style="
+        <h3 style="
             color:#bbbbbb;
             font-weight:400;
         ">
             Every Room Tells A Story
-        
+        </h3>
     </div>
     """, unsafe_allow_html=True)
 
